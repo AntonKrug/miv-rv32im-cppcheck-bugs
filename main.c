@@ -7,7 +7,21 @@
  * as desired.
  *
  * The project is loosely based on the miv-rv32im-systick-blinky and has the
- * hardware configuration in common.
+ * hardware configuration in common, but the hardware is optional.
+ * Demonstration of found bug is working fully without any hardware present.
+ *
+ * List what check the tool is capable is listed on the project page:
+ * https://sourceforge.net/p/cppcheck/wiki/ListOfChecks/
+ *
+ * If security is significant concern then using multiple analysis tools at
+ * the same time would be recommended, but for a free bundled tool, the cppcheck
+ * is decent first line defense.
+ *
+ * Public known vulnerabilities detected with cppcheck:
+ * http://seclists.org/oss-sec/2017/q3/397
+ * https://lists.x.org/archives/xorg-announce/2014-January/002389.html
+ * https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2012-1147
+ *
  */
 
 #include "riscv_hal.h"
