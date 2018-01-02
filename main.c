@@ -33,43 +33,43 @@
 char hello_world[BUFFER_SIZE] ="\r\nHello World CPP check example\r\n";
 
 typedef struct Staff {
-	int days_worked;
-	int salary;
-	int paid_total;
+    int days_worked;
+    int salary;
+    int paid_total;
 } Staff;
 
 Staff joe = {
     .days_worked = 16,
-	.salary      = 900,
-	.paid_total  = 1800
+    .salary      = 900,
+    .paid_total  = 1800
 };
 
 void pay_staff(Staff *person) {
-	// Following can happen:
-	//
-	// A) [possible BUG] The person is already checked for null pointer outside
+    // Following can happen:
+    //
+    // A) [possible BUG] The person is already checked for null pointer outside
     //    this function and it's already safe and the null pointer check is
-	//    redundant.
-	//
-	// B) [severe BUG] Person is not checked and could contain null pointer,
-	//    but the code will break before the null pointer check.
-	//
-	// Either the code is redundant at best or broken at worst, indication to
-	// rewrite the code given by cppcheck.
-	person->paid_total += person->salary;
+    //    redundant.
+    //
+    // B) [severe BUG] Person is not checked and could contain null pointer,
+    //    but the code will break before the null pointer check.
+    //
+    // Either the code is redundant at best or broken at worst, indication to
+    // rewrite the code given by cppcheck.
+    person->paid_total += person->salary;
 
-	if (person) {
-		// Check for null pointer then use the struct
-		person->days_worked+=7;
-	}
+    if (person) {
+        // Check for null pointer then use the struct
+        person->days_worked+=7;
+    }
 }
 
 Staff* hire_staff(int copy_default_values) {
-	Staff default_staff = {
-	    .days_worked = 0,
-		.salary      = 850,
-		.paid_total  = 0
-	};
+    Staff default_staff = {
+        .days_worked = 0,
+        .salary      = 850,
+        .paid_total  = 0
+    };
 
 
     Staff *ret = NULL;
@@ -87,12 +87,12 @@ Staff* hire_staff(int copy_default_values) {
 
 // cppcheck-suppress unusedFunction
 void interrupt_handler(void) {
-	// handlers are not called by software directly and in this case you want
-	// to supress the warning.
+    // handlers are not called by software directly and in this case you want
+    // to supress the warning.
 }
 
 void change_salary(Staff *person) {
-	// this function is never called, show warning
+    // this function is never called, show warning
 }
 
 
@@ -103,28 +103,28 @@ int main(int argc, char **argv) {
     printf("%s", hello_world);
 
     for (int i=0; i< 100; i++) {
-    	if (i > 90 || i < 100) {
-    		// [possibly a BUG] condition which will always evaluate to be true
-    		printf("Condition meet all the time at i=%d\r\n", i);
-    	}
+        if (i > 90 || i < 100) {
+            // [possibly a BUG] condition which will always evaluate to be true
+            printf("Condition meet all the time at i=%d\r\n", i);
+        }
 
-    	if (i == 99 || 99 == i) {
-    		// [possibly a BUG] condition meet at i==99, probably has a typo
-    		printf("Condition met at i=%d\r\n", i);
-    	}
+        if (i == 99 || 99 == i) {
+            // [possibly a BUG] condition meet at i==99, probably has a typo
+            printf("Condition met at i=%d\r\n", i);
+        }
     }
 
     // Clearing buffer in a for loop.
     // [severe BUG] Flawed condition will cause out-of-bounds error
     for (int i=0; i<=BUFFER_SIZE; i++) {
-    	hello_world[i] = 0;
+        hello_world[i] = 0;
     }
 
-	// [possible BUG] Setting j to 10 but never using j with this value.
+    // [possible BUG] Setting j to 10 but never using j with this value.
     for (int i=0; i<=BUFFER_SIZE; i++) {
-    	int j = 10;
-    	j = i + 33;  // First value is unused, possibly missing a functionality
-		printf("Result of i + 33 = %d\r\n", j);
+        int j = 10;
+        j = i + 33;  // First value is unused, possibly missing a functionality
+        printf("Result of i + 33 = %d\r\n", j);
     }
 
     *pointer = 0; // [severe BUG] Write to pointer which is uninitialized
