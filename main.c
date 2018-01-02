@@ -88,7 +88,7 @@ Staff* hire_staff(int copy_default_values) {
 // cppcheck-suppress unusedFunction
 void interrupt_handler(void) {
 	// handlers are not called by software directly and in this case you want
-	// to ignore the warning.
+	// to supress the warning.
 }
 
 void change_salary(Staff *person) {
