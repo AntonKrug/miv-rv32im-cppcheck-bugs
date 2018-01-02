@@ -107,6 +107,12 @@
                                     								
                                 </option>
                                 								
+                                <option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs.984667370" name="Defined symbols (-D)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="MSCC_STDIO_THRU_CORE_UART_APB"/>
+                                    								
+                                </option>
+                                								
                                 <inputType id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input.1901773760" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler.input"/>
                                 							
                             </tool>
@@ -287,8 +293,6 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/drivers/CoreGPIO}&quot;"/>
-                                    									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/drivers/CoreUARTapb}&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/hal}&quot;"/>
@@ -300,6 +304,8 @@
                                 <option id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs.944841487" name="Defined symbols (-D)" superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
                                     									
                                     <listOptionValue builtIn="false" value="NDEBUG"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="MSCC_STDIO_THRU_CORE_UART_APB"/>
                                     								
                                 </option>
                                 								
@@ -415,6 +421,20 @@
     	
     <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
     	
-    <storageModule moduleId="refreshScope"/>
+    <storageModule moduleId="refreshScope" versionNumber="2">
+        		
+        <configuration configurationName="Debug">
+            			
+            <resource resourceType="PROJECT" workspacePath="/miv-rv32im-cppcheck-bugs"/>
+            		
+        </configuration>
+        		
+        <configuration configurationName="Release">
+            			
+            <resource resourceType="PROJECT" workspacePath="/miv-rv32im-cppcheck-bugs"/>
+            		
+        </configuration>
+        	
+    </storageModule>
     
 </cproject>

@@ -13,7 +13,11 @@
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
-			<triggers>full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.googlecode.cppcheclipse.Builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -22,5 +26,6 @@
 		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+		<nature>com.googlecode.cppcheclipse.Nature</nature>
 	</natures>
 </projectDescription>
