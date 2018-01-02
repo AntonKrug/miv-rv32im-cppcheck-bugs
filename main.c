@@ -15,53 +15,124 @@
  *
  * If security is significant concern then using multiple analysis tools at
  * the same time would be recommended, but for a free bundled tool, the cppcheck
- * is decent first line defense.
+ * is decent first line defense. Each project can set separately how thoroughly
+ * the cppcheck will analyse the project. By default only errors are enabled,
+ * but optional style, performance and portability checks can be enabled as
+ * well.
  *
- * Public known vulnerabilities detected with cppcheck:
+ * Publicly known vulnerabilities detected with cppcheck:
  * http://seclists.org/oss-sec/2017/q3/397
  * https://lists.x.org/archives/xorg-announce/2014-January/002389.html
  * https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2012-1147
  *
  */
+#define BUFFER_SIZE 38
 
-#include "riscv_hal.h"
-#include "hw_platform.h"
-#include "core_uart_apb.h"
+#include <stdio.h>
 
-const char * g_hello_msg ="\r\n    Hello World Example   \r\n\r\n";
+char hello_world[BUFFER_SIZE] ="\r\nHello World CPP check example\r\n";
 
-/*-----------------------------------------------------------------------------
- * UART instance data.
- */
-UART_instance_t g_uart;
+typedef struct Staff {
+	int days_worked;
+	int salary;
+	int paid_total;
+} Staff;
 
-/*-----------------------------------------------------------------------------
- * main
- */
+Staff joe = {
+    .days_worked = 16,
+	.salary      = 900,
+	.paid_total  = 1800
+};
+
+void pay_staff(Staff *person) {
+	// Following can happen:
+	//
+	// A) [possible BUG] The person is already checked for null pointer outside
+    //    this function and it's already safe and the null pointer check is
+	//    redundant.
+	//
+	// B) [severe BUG] Person is not checked and could contain null pointer,
+	//    but the code will break before the null pointer check.
+	//
+	// Either the code is redundant at best or broken at worst, indication to
+	// rewrite the code given by cppcheck.
+	person->paid_total += person->salary;
+
+	if (person) {
+		// Check for null pointer then use the struct
+		person->days_worked+=7;
+	}
+}
+
+Staff* hire_staff(int copy_default_values) {
+	Staff default_staff = {
+	    .days_worked = 0,
+		.salary      = 850,
+		.paid_total  = 0
+	};
+
+
+    Staff *ret = NULL;
+    if (copy_default_values == 1) {
+        ret = &default_staff;
+    }
+
+    // if "copy_default_values" is not 1 then "ret" will stay NULL and shouldn't
+    // be accessed yet, probably missing else statement, or default
+    // initialization [possible BUG]
+
+    ret->days_worked = 1;
+    return(ret);
+}
+
+// cppcheck-suppress unusedFunction
+void interrupt_handler(void) {
+	// handlers are not called by software directly and in this case you want
+	// to ignore the warning.
+}
+
+void change_salary(Staff *person) {
+	// this function is never called, show warning
+}
+
+
 int main(int argc, char **argv) {
-    uint8_t rx_char;
-    uint8_t rx_count;
+    uint8_t rx_char; // [not a BUG] Unused variable
+    char *pointer;   // [severe BUG] Variable will be used without initialising.
 
-    PLIC_init();
+    printf("%s", hello_world);
 
-    UART_init(&g_uart,
-              COREUARTAPB0_BASE_ADDR,
-              BAUD_VALUE_115200,
-              (DATA_8_BITS | NO_PARITY));
+    for (int i=0; i< 100; i++) {
+    	if (i > 90 || i < 100) {
+    		// [possibly a BUG] condition which will always evaluate to be true
+    		printf("Condition meet all the time at i=%d\r\n", i);
+    	}
 
-    UART_polled_tx_string(&g_uart, (const uint8_t *)g_hello_msg);
+    	if (i == 99 || 99 == i) {
+    		// [possibly a BUG] condition meet at i==99, probably has a typo
+    		printf("Condition met at i=%d\r\n", i);
+    	}
+    }
 
-    /*
-     * Loop. Echo back characters received on UART.
-     */
-    do {
-        rx_count = UART_get_rx(&g_uart, &rx_char, 1);
-        if (rx_count > 0) {
-            UART_send(&g_uart, &rx_char, 1);
-        }
-    } while (1);
-  
-  
+    // Clearing buffer in a for loop.
+    // [severe BUG] Flawed condition will cause out-of-bounds error
+    for (int i=0; i<=BUFFER_SIZE; i++) {
+    	hello_world[i] = 0;
+    }
+
+	// [possible BUG] Setting j to 10 but never using j with this value.
+    for (int i=0; i<=BUFFER_SIZE; i++) {
+    	int j = 10;
+    	j = i + 33;  // First value is unused, possibly missing a functionality
+		printf("Result of i + 33 = %d\r\n", j);
+    }
+
+    *pointer = 0; // [severe BUG] Write to pointer which is uninitialized
+
+    Staff *jack_p = hire_staff(1);
+    pay_staff(&joe);
+    pay_staff(jack_p);
+
     return 0;
 }
 
