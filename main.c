@@ -31,17 +31,20 @@
 #include <stdio.h>
 
 char hello_world[BUFFER_SIZE] ="\r\nHello World CPP check example\r\n";
+char temporary_variable;
 
 typedef struct Staff {
     int days_worked;
     int salary;
     int paid_total;
+    int holiday_ballance;
 } Staff;
 
 Staff joe = {
-    .days_worked = 16,
-    .salary      = 900,
-    .paid_total  = 1800
+    .days_worked      = 16,
+    .salary           = 900,
+    .paid_total       = 1800,
+    .holiday_ballance = 2
 };
 
 void pay_staff(Staff *person) {
@@ -59,16 +62,18 @@ void pay_staff(Staff *person) {
     person->paid_total += person->salary;
 
     if (person) {
-        // Check for null pointer then use the struct
-        person->days_worked+=7;
+        // Check for null pointer then use the Staff struct
+        person->days_worked += 7;
+        person->holiday_ballance++;
     }
 }
 
 Staff* hire_staff(int copy_default_values) {
     Staff default_staff = {
-        .days_worked = 0,
-        .salary      = 850,
-        .paid_total  = 0
+        .days_worked      = 0,
+        .salary           = 850,
+        .paid_total       = 0,
+        .holiday_ballance = 0
     };
 
 
