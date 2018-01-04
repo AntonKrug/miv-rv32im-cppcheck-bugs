@@ -6,9 +6,9 @@
  * cases where the code compiles correctly, might run, but might not behave
  * as desired.
  *
- * The project is loosely based on the miv-rv32im-systick-blinky and has the
- * hardware configuration in common, but the hardware is optional.
- * Demonstration of found bug is working fully without any hardware present.
+ * The project is loosely based on the miv-rv32im-systick-blinky but was not
+ * meant to be running, the purpose of the project was to demostrate bug/issue
+ * finding capabilities of cppcheck, which are detected at compile time.
  *
  * List what check the tool is capable is listed on the project page:
  * https://sourceforge.net/p/cppcheck/wiki/ListOfChecks/
